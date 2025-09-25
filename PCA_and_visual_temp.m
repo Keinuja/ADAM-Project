@@ -20,10 +20,10 @@ WT39(:,[12,15]) = [];
 %WT14_faulty = WT14(1:357,:);
 %WT14_good   = WT14(358:end,:);
 WT39_faulty = WT39(1:470,:);
-WT39_good   = WT39(471:end,:);
+%WT39_good   = WT39(471:end,:);
 
 %% Combine healthy data
-WT_good = [WT2; WT39_good]; %WT14_good;
+WT_good = [WT2]; %WT14_good; WT39_good
 
 %% PCA
 X = zscore(WT_good);       % standardize
@@ -51,12 +51,12 @@ saveas(fig1,'variance_explained.png')
 WT39_faulty_PC = zscore(WT39_faulty) * W(:,1:pcs);
 
 count2  = size(WT2,1);
-count14 = size(WT14_good,1);
-count39 = size(WT39_good,1);
+%count14 = size(WT14_good,1);
+%count39 = size(WT39_good,1);
 
 i2_end  = count2;
-i14_end = i2_end + count14;
-i39_end = i14_end + count39;
+%i14_end = i2_end + count14;
+%i39_end = i14_end + count39;
 
 %% 2D and 3D PCA plots
 fig2 = figure;
@@ -64,7 +64,7 @@ fig2 = figure;
 subplot(1,2,1)
 plot(PC(1:i2_end,1),PC(1:i2_end,2),'g*'); hold on
 %plot(PC(i2_end+1:i14_end,1),PC(i2_end+1:i14_end,2),'c*') // 'WT14 good'
-plot(PC(i14_end+1:i39_end,1),PC(i14_end+1:i39_end,2),'k*')
+%plot(PC(i14_end+1:i39_end,1),PC(i14_end+1:i39_end,2),'k*')
 %plot(WT14_faulty_PC(:,1),WT14_faulty_PC(:,2),'m*') // 'WT14 faulty'
 plot(WT39_faulty_PC(:,1),WT39_faulty_PC(:,2),'y*')
 xlabel('PC1'); ylabel('PC2')
@@ -73,8 +73,8 @@ title('2D PCA Projection')
 
 subplot(1,2,2)
 plot3(PC(1:i2_end,1),PC(1:i2_end,2),PC(1:i2_end,3),'g*'); hold on
-plot3(PC(i2_end+1:i14_end,1),PC(i2_end+1:i14_end,2),PC(i2_end+1:i14_end,3),'c*')
-plot3(PC(i14_end+1:i39_end,1),PC(i14_end+1:i39_end,2),PC(i14_end+1:i39_end,3),'k*')
+%plot3(PC(i2_end+1:i14_end,1),PC(i2_end+1:i14_end,2),PC(i2_end+1:i14_end,3),'c*')
+%plot3(PC(i14_end+1:i39_end,1),PC(i14_end+1:i39_end,2),PC(i14_end+1:i39_end,3),'k*')
 %plot3(WT14_faulty_PC(:,1),WT14_faulty_PC(:,2),WT14_faulty_PC(:,3),'m*')
 plot3(WT39_faulty_PC(:,1),WT39_faulty_PC(:,2),WT39_faulty_PC(:,3),'y*')
 xlabel('PC1'); ylabel('PC2'); zlabel('PC3')
@@ -101,7 +101,7 @@ varNames = [ ...
 
 sgtitle('Biplots for each turbine')
 
-subplot(1,3,1)
+subplot(1,2,1)
 biplot(W(:,1:2),'Scores',T(1:i2_end,1:2), 'VarLabels', varNames(1:25))
 title('WT2')
 
@@ -109,8 +109,8 @@ title('WT2')
 % biplot(W(:,1:2),'Scores',[T(i2_end+1:i14_end,1:2);WT14_faulty_PC(:,1:2)], 'VarLabels', varNames(1:25))
 % title('WT14')
 
-subplot(1,3,3)
-biplot(W(:,1:2),'Scores',[T(i14_end+1:i39_end,1:2);WT39_faulty_PC(:,1:2)], 'VarLabels', varNames(1:25))
+subplot(1,2,2)
+biplot(W(:,1:2),'Scores', WT39_faulty_PC(:,1:2), 'VarLabels', varNames(1:25)) %T(i14_end+1:i39_end,1:2);
 title('WT39')
 
 saveas(fig3,'biplots.png')
